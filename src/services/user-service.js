@@ -28,7 +28,7 @@ class UserService {
             const passwordsMatch = this.checkPassword(plainPassword, user.password);
             if(!passwordsMatch){
                 console.log("Password doesn't match");
-                throw {errpr: 'Incorrect password'};
+                throw {error: 'Incorrect password'};
             }
             //step 3 -> if passwords match then create a token and sent it to the user 
             const newJWT = this.createToken({email: user.email , id:user.id});
@@ -45,7 +45,7 @@ class UserService {
             if(!response){
                 throw { error:'Invalid Token' }
             }
-            const user = this.userRepository.getById(response.id);
+            const user = await this.userRepository.getById(response.id);
             if(!user) {
                 throw{error:'No user with the corresponding token exists'}
             }
@@ -84,6 +84,14 @@ class UserService {
             throw {error};
         }
      } 
+    //  isAdmin(userId) {
+    //     try {
+    //         return this.userRepository.isAdmin(userId);
+    //     } catch (error) {
+    //         console.log("Something wentr wrong in service layer");
+    //         throw {error};
+    //     }
+    //  }
 }
 
 module.exports = UserService;

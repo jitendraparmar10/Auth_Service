@@ -10,6 +10,10 @@ const validateUserAuth = (req,res,next)=>{
     next();
 }
 
+// const validateIsAdminRequest = (req,res,next)=>{
+//     if(!  )
+// }
+
 module.exports={
     validateUserAuth,
 }
