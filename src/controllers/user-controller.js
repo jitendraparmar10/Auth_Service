@@ -1,5 +1,5 @@
 const UserService = require('../services/user-service');
-// const{response} = require('express');
+
 
 const userService = new UserService();
 
@@ -16,12 +16,12 @@ const create = async(req,res)=>{
             message:'Successfully created new user'
         });
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            message:'Something went wrong',
+        // console.log(error);
+        return res.status(error.statusCode).json({
+            message: error.message,
             data:{},
             success:false,
-            err:error
+            err: error.explanation
         });   
     }
 }
