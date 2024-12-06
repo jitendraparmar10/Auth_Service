@@ -1,5 +1,7 @@
 const { User , Role } = require('../models/index');
+const ClientError = require('../utils/client-error');
 const  ValidationError  = require('../utils/validation-error');
+const {StatusCodes}= require('http-status-codes');
 
 class UserRepository {
 
@@ -17,7 +19,7 @@ class UserRepository {
         }
     }
 
-    async destory(userId){
+    async destroy(userId){
         try {
             await User.delete({
                 where:{
@@ -46,9 +48,18 @@ class UserRepository {
         try {
             const user = await User.findOne({where:{
                 email:userEmail
-        }});
+            }});
+            if(!user){
+                throw new ClientError(
+                    'AttributeNotFound',
+                    'Invalid Email sent in the request',
+                    'Please check the Email and try again',
+                    StatusCodes.NOT_FOUND
+                );
+            }
             return user;
         } catch (error) {
+            console.log(error);
             console.log("something went wrong on repository layer");
             throw {error};   
         }

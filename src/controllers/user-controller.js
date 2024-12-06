@@ -1,3 +1,4 @@
+const { response } = require('express')
 const UserService = require('../services/user-service');
 
 
@@ -7,13 +8,13 @@ const create = async(req,res)=>{
     try {
         const response = await userService.create({
             email: req.body.email,
-            password: req.body.password,
+            password: req.body.password
         });
         return res.status(201).json({
             success:true,
             data:response,
             error:{},
-            message:'Successfully created new user'
+            message:'Successfully created a new user'
         });
     } catch (error) {
         // console.log(error);
@@ -28,7 +29,7 @@ const create = async(req,res)=>{
 
 const signIn = async (req ,res)=>{
     try {
-        const response = await userService.signIn(req.body.email,req.body.password,);
+        const response = await userService.signIn(req.body.email, req.body.password);
         return res.status(200).json({
             success:true,
             data:response,
@@ -37,11 +38,12 @@ const signIn = async (req ,res)=>{
         });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({
-            message:'Something went wrong',
+        
+        return res.status( error.statusCode ||500 ).json({
+            message: error.message,
             data:{},
             success:false,
-            err:error
+            error: error.explanation
         }); 
     }
 }
